@@ -4,6 +4,8 @@ const createStore = redux.createStore
 // action type
 const CAKE_ORDERED = "CAKE_ORDERED"
 const CAKE_RESTOCKED = "CAKE_RESTOCKED"
+const ICECREAM_ORDERED = "ICECREAM_ORDERED"
+const ICECREAM_RESTOCKED = "ICECREAM_RESTOCKED"
 
 // action creator fn
 function orderCake() {
@@ -20,10 +22,25 @@ function restockCake(qty = 1) {
   }
 }
 
+function orderIcecream(qty = 1) {
+  return {
+    type: ICECREAM_ORDERED,
+    payload: qty,
+  }
+}
+
+function restockIcecream(qty = 1) {
+  return {
+    type: ICECREAM_RESTOCKED,
+    payload: qty,
+  }
+}
+
 // reducer = (previousState, action) => newState
 
 const initialState = {
   numOfCakes: 10,
+  numOfIcecreams: 20,
 }
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +54,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         numOfCakes: state.numOfCakes + action.payload,
+      }
+    case ICECREAM_ORDERED:
+      return {
+        ...state,
+        numOfIcecreams: state.numOfIcecreams - 1,
+      }
+    case ICECREAM_RESTOCKED:
+      return {
+        ...state,
+        numOfIcecreams: state.numOfIcecreams + action.payload,
       }
     default:
       return state
@@ -60,8 +87,12 @@ const unSubcribe = store.subscribe(() =>
 store.dispatch(orderCake())
 store.dispatch(orderCake())
 store.dispatch(orderCake())
-
 store.dispatch(restockCake(3))
+
+store.dispatch(orderIcecream())
+store.dispatch(orderIcecream())
+store.dispatch(orderIcecream())
+store.dispatch(restockIcecream(3))
 
 //Handles unregistering of listeners via the fn returned by subscribe(listener)
 unSubcribe()
