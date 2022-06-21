@@ -1,5 +1,6 @@
 const redux = require("redux")
 const createStore = redux.createStore
+const combineReducers = redux.combineReducers
 
 // action type
 const CAKE_ORDERED = "CAKE_ORDERED"
@@ -63,7 +64,7 @@ const cakeReducer = (state = initialCakeState, action) => {
   }
 }
 
-const IcecreamReducer = (state = initialIcecreamState, action) => {
+const icecreamReducer = (state = initialIcecreamState, action) => {
   switch (action.type) {
     case ICECREAM_ORDERED:
       return {
@@ -80,10 +81,14 @@ const IcecreamReducer = (state = initialIcecreamState, action) => {
   }
 }
 
+const rootReducer = combineReducers({
+  cake: cakeReducer,
+  icecream: icecreamReducer,
+})
 // Redux store
 
 // holds app's state
-const store = createStore(reducer)
+const store = createStore(rootReducer)
 
 // getState() -> allows us to access the state
 console.log("Initial state", store.getState())
